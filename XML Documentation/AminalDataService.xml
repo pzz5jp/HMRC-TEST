@@ -1,0 +1,59 @@
+<data description="multiple services per each table" disableLegacyBoxcarringMode="false" enableBatchRequests="false" enableBoxcarring="false" name="Animal_DataService" serviceNamespace="http://HMRC.com/Animals" serviceStatus="active" transports="http https">
+   <config id="default">
+      <property name="carbon_datasource_name">HMRC</property>
+   </config>
+   <query id="update_Animal_query" useConfig="default">
+      <sql>UPDATE Animal SET Animal_Name=? WHERE Id=?</sql>
+      <param name="Animal_Name" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"/>
+      <param name="Id" ordinal="2" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+   </query>
+   <query id="delete_Animal_query" useConfig="default">
+      <sql>DELETE FROM Animal WHERE Id=?</sql>
+      <param name="Id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+   </query>
+   <query id="select_with_key_Animal_query" useConfig="default">
+      <sql>SELECT Id, Animal_Name FROM Animal WHERE Id=?</sql>
+      <param name="Id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+      <result element="AnimalCollection" rowName="Animal">
+         <element column="Id" name="Id" xsdType="xs:integer"/>
+         <element column="Animal_Name" name="Animal_Name" xsdType="xs:string"/>
+      </result>
+   </query>
+   <query id="insert_Animal_query" useConfig="default">
+      <sql>INSERT INTO Animal(Id,Animal_Name) VALUES(?,?)</sql>
+      <param name="Id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+      <param name="Animal_Name" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"/>
+   </query>
+   <query id="select_all_Animal_query" useConfig="default">
+      <sql>SELECT Id, Animal_Name FROM Animal</sql>
+      <result element="AnimalCollection" rowName="Animal">
+         <element column="Id" name="Id" xsdType="xs:integer"/>
+         <element column="Animal_Name" name="Animal_Name" xsdType="xs:string"/>
+      </result>
+   </query>
+   <operation name="insert_Animal_operation">
+      <call-query href="insert_Animal_query">
+         <with-param name="Animal_Name" query-param="Animal_Name"/>
+         <with-param name="Id" query-param="Id"/>
+      </call-query>
+   </operation>
+   <operation name="delete_Animal_operation">
+      <call-query href="delete_Animal_query">
+         <with-param name="Id" query-param="Id"/>
+      </call-query>
+   </operation>
+   <operation name="select_all_Animal_operation">
+      <call-query href="select_all_Animal_query"/>
+   </operation>
+   <operation name="update_Animal_operation">
+      <call-query href="update_Animal_query">
+         <with-param name="Animal_Name" query-param="Animal_Name"/>
+         <with-param name="Id" query-param="Id"/>
+      </call-query>
+   </operation>
+   <operation name="select_with_key_Animal_operation">
+      <call-query href="select_with_key_Animal_query">
+         <with-param name="Id" query-param="Id"/>
+      </call-query>
+   </operation>
+</data>
